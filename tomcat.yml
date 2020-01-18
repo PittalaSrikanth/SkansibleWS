@@ -1,0 +1,40 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    xmx_size: 512m
+    xx_size: 256m
+    user: admin 
+    password: password
+    tomcat8_additional_packages:
+       - tomcat8-docs
+       - tomcat8-admin
+       - tomcat8-examples
+  tasks:
+  - name: install tomcat8
+    apt: 
+     name: tomcat8
+     update_cache: yes
+     state: present
+  - name: copy tomcat8 file
+    template:  
+     src: AnsibleWS/tomcat8.j2
+     dest: /etc/default/tomcat8
+    notify:
+    - tomcat8 restart
+  - name: install addtional package
+    package:
+     name: "{{ item }}"
+     state: present
+    loop: {{ tomcat8_additional_packages }}
+  - name: copy tomcat8 users file
+    template:  
+     src: AnsibleWS/tomcat-users.xml.j2
+     dest: /etc/tomcat8/tomcat-users.xml
+    notify:
+    - tomcat8 restart      
+  handlers:
+  - name: tomcat8 restart
+    service:
+     name: tomcat8
+     state: restarted
