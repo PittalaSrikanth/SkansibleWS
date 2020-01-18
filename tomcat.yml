@@ -18,7 +18,7 @@
      state: present
   - name: copy tomcat8 file
     template:  
-     src: AnsibleWS/tomcat8.j2
+     src: SkansibleWS/tomcat8.j2
      dest: /etc/default/tomcat8
     notify:
     - tomcat8 restart
@@ -29,7 +29,7 @@
     loop: {{ tomcat8_additional_packages }}
   - name: copy tomcat8 users file
     template:  
-     src: AnsibleWS/tomcat-users.xml.j2
+     src: SkansibleWS/tomcat-users.xml.j2
      dest: /etc/tomcat8/tomcat-users.xml
     notify:
     - tomcat8 restart      
