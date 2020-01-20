@@ -1,27 +1,14 @@
 ---
 - hosts: all
   become: yes
-  vars:
-    xmx_size: 512m
-    xx_size: 256m
-    user: admin 
-    password: password
-    tomcat8_additional_packages:
-       - tomcat8-docs
-       - tomcat8-admin
-       - tomcat8-examples
   tasks:
   - name: install tomcat8
-    package: 
+    apt:
      name: tomcat8
      state: present
-  - name: install tomcat8
-    apt:     
-     update_cache: yes
-    when: ansible_os_family == "Debian"
   - name: copy tomcat8 file
-    template:  
-     src: SkansibleWS/tomcat8.j2
+    template:
+     src: /home/ansible/templates/tomcat8.j2
      dest: /etc/default/tomcat8
     notify:
     - tomcat8 restart
@@ -31,11 +18,15 @@
      state: present
     loop: "{{ tomcat8_additional_packages }}"
   - name: copy tomcat8 users file
-    template:  
-     src: SkansibleWS/tomcat-users.xml.j2
+    template:
+     src: /home/ansible/templates/tomcat-users.xml.j2
      dest: /etc/tomcat8/tomcat-users.xml
     notify:
-    - tomcat8 restart      
+    - tomcat8 restart
+  - name: copying jar file
+    get_url:
+      url: "{{ war_location }}"
+      dest: "/var/lib/tomcat8/webapps/{{ war_file_name }}"
   handlers:
   - name: tomcat8 restart
     service:
