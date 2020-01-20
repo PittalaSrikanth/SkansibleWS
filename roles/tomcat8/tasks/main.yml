@@ -1,27 +1,13 @@
 ---
 # tasks file for tomcat_structure
-  - name: install tomcat8
-    apt:
-     name: tomcat8
-     state: present
-  - name: copy tomcat8 file
-    template:
-     src: /home/ansible/templates/tomcat8.j2
-     dest: /etc/default/tomcat8
-    notify:
-    - tomcat8 restart
-  - name: install addtional package
-    package:
-     name: "{{ item }}"
-     state: present
-    loop: "{{ tomcat8_additional_packages }}"
-  - name: copy tomcat8 users file
-    template:
-     src: /home/ansible/templates/tomcat-users.xml.j2
-     dest: /etc/tomcat8/tomcat-users.xml
-    notify:
-    - tomcat8 restart
-  - name: copying jar file
-    get_url:
-      url: "{{ war_location }}"
-      dest: "/var/lib/tomcat8/webapps/{{ war_file_name }}"
+  - name: install tomcat8 on ubuntu
+    include_task: task1.yml
+    when: ansible_os_family == "Ubuntu"
+  - name: install tomcat8 on Redhat
+    include_task: task2.yml
+    when: ansible_os_family == "RedHat"
+  - name: install tomcat8 on Redhat
+    include_task: task2.yml
+    when: ansible_os_family == "Debian"
+  
+    

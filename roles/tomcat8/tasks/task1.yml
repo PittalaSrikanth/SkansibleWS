@@ -1,0 +1,27 @@
+---
+# tasks file for tomcat_structure
+  - name: install tomcat8
+    apt:
+     name: tomcat8
+     state: present
+  - name: copy tomcat8 file
+    template:
+     src: /home/ansible/templates/tomcat8.j2
+     dest: /etc/default/tomcat8
+    notify:
+    - tomcat8 restart
+  - name: install addtional package
+    package:
+     name: "{{ item }}"
+     state: present
+    loop: "{{ tomcat8_additional_packages }}"
+  - name: copy tomcat8 users file
+    template:
+     src: /home/ansible/templates/tomcat-users.xml.j2
+     dest: /etc/tomcat8/tomcat-users.xml
+    notify:
+    - tomcat8 restart
+  - name: copying jar file
+    get_url:
+      url: "{{ war_location }}"
+      dest: "/var/lib/tomcat8/webapps/{{ war_file_name }}"
