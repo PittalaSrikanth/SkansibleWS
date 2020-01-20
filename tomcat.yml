@@ -12,10 +12,13 @@
        - tomcat8-examples
   tasks:
   - name: install tomcat8
-    apt: 
+    package: 
      name: tomcat8
-     update_cache: yes
      state: present
+  - name: install tomcat8
+    apt:     
+     update_cache: yes
+    when: ansible_os_family == "Debian"
   - name: copy tomcat8 file
     template:  
      src: SkansibleWS/tomcat8.j2
@@ -26,7 +29,7 @@
     package:
      name: "{{ item }}"
      state: present
-    loop: {{ tomcat8_additional_packages }}
+    loop: "{{ tomcat8_additional_packages }}"
   - name: copy tomcat8 users file
     template:  
      src: SkansibleWS/tomcat-users.xml.j2
