@@ -1,0 +1,12 @@
+---
+# vars file for tomcat_structure
+xmx_size: 512m
+xx_size: 256m
+user: admin
+password: password
+tomcat8_additional_packages:
+       - tomcat8-docs
+       - tomcat8-admin
+       - tomcat8-examples
+war_location: https://skansiblebucket.s3.us-east-2.amazonaws.com/sample.war
+war_file_name: sample.war
