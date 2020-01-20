@@ -1,13 +1,13 @@
 ---
 # tasks file for tomcat_structure
   - name: install tomcat8 on ubuntu
-    include_task: task1.yml
+    include_tasks: task1.yml
     when: ansible_os_family == "Ubuntu"
   - name: install tomcat8 on Redhat
-    include_task: task2.yml
+    include_tasks: task2.yml
     when: ansible_os_family == "RedHat"
   - name: install tomcat8 on Redhat
-    include_task: task2.yml
+    include_tasks: task2.yml
     when: ansible_os_family == "Debian"
   
     
